@@ -1,11 +1,16 @@
 import { GoogleGenAI } from "@google/genai";
 
-// Initialize the GoogleGenAI client with the API key from process.env.API_KEY.
-// This follows the strict guideline to use process.env.API_KEY directly.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Vite exposes client-safe env vars via import.meta.env.*
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
 
 export const getGeminiResponse = async (prompt: string, roleContext: string): Promise<string> => {
   try {
+    if (!ai) {
+      console.error("Gemini API key is missing. Set VITE_GEMINI_API_KEY in your env.");
+      return "Maaf, konfigurasi AI tidak lengkap. Sila hubungi pentadbir.";
+    }
+
     const model = 'gemini-2.5-flash';
     const response = await ai.models.generateContent({
       model: model,

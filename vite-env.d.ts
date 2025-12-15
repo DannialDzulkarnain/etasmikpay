@@ -12,7 +12,7 @@ declare module '*.json';
 
 // Define ImportMetaEnv and ImportMeta
 interface ImportMetaEnv {
-  readonly VITE_API_KEY: string;
+  readonly VITE_GEMINI_API_KEY: string;
   [key: string]: any;
 }
 
